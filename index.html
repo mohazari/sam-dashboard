@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sam — Lead Research Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="avatar">👷‍♂️</div>
+        <h1 class="logo">Sam</h1>
+        <p class="tagline">Lead Research Agent</p>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#" class="nav-link active" data-page="overview"><span class="nav-icon">◈</span> Overview</a></li>
+        <li><a href="#" class="nav-link" data-page="campaigns"><span class="nav-icon">◎</span> Campaigns</a></li>
+        <li><a href="#" class="nav-link" data-page="dashboard"><span class="nav-icon">◐</span> Dashboard</a></li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="status-badge online">● Online</div>
+        <p class="version">v3.0 · Wishpond</p>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="content">
+
+      <!-- PAGE 1: Overview -->
+      <section id="page-overview" class="page active">
+        <header class="page-header">
+          <h2>Overview</h2>
+          <p class="subtitle">Architecture, skills, and data flow</p>
+        </header>
+
+        <!-- Who I Am -->
+        <div class="card hero-card">
+          <div class="hero-content">
+            <div>
+              <h3>Who is Sam?</h3>
+              <p>I'm an AI-powered Lead Research Agent built on <strong>OpenClaw</strong>, working for <strong>Wishpond Technologies</strong>. I process, validate, and import thousands of leads daily through an automated pipeline — from raw CSV files on Google Drive all the way into Instantly email campaigns.</p>
+              <div class="tag-row">
+                <span class="tag">AI Agent</span>
+                <span class="tag">OpenClaw Runtime</span>
+                <span class="tag">Wishpond</span>
+                <span class="tag">Lead Pipeline</span>
+              </div>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-block">
+                <span class="stat-number">4</span>
+                <span class="stat-label">Skills</span>
+              </div>
+              <div class="stat-block">
+                <span class="stat-number">4</span>
+                <span class="stat-label">Campaigns</span>
+              </div>
+              <div class="stat-block">
+                <span class="stat-number">20K+</span>
+                <span class="stat-label">Daily Target</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline Architecture -->
+        <div class="card">
+          <h3>Pipeline Architecture</h3>
+          <p class="card-desc">My 4-skill pipeline processes leads through validation, quality assurance, and campaign import.</p>
+          <div class="pipeline">
+            <div class="pipeline-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4>Review Leads Quality & Post</h4>
+                <p>Receive Drive links → Validate CSVs against source-specific rules (Storeleads: 15 checks, BuiltWith: 17 checks) → Auto-correct fixable issues → Rename with pipeline convention → Post to Google Sheet (10/day/drive)</p>
+                <div class="step-tags">
+                  <span class="step-tag trigger">Event-triggered</span>
+                  <span class="step-tag">Google Drive</span>
+                  <span class="step-tag">Google Sheets</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-arrow">↓</div>
+            <div class="pipeline-step external">
+              <div class="step-number ext">⚙</div>
+              <div class="step-content">
+                <h4>Leadcustomization Pipeline</h4>
+                <p>External pipeline: email crawling → Facebook crawling → dedup → email verification → AI personalization (business type, services, company name, explanation templates)</p>
+                <div class="step-tags">
+                  <span class="step-tag external-tag">External</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-arrow">↓</div>
+            <div class="pipeline-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4>Review Lead Customization Quality</h4>
+                <p>QA personalized output (Wishpond only) → AI-powered quality review on sampled rows → Auto-correct fixable issues → Copy to <code>ready_for_assignment/{source_category}/</code> + <code>piq_import/</code></p>
+                <div class="step-tags">
+                  <span class="step-tag trigger">Dependency-triggered</span>
+                  <span class="step-tag">AI Review</span>
+                  <span class="step-tag">File Routing</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-arrow">↓</div>
+            <div class="pipeline-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4>Instantly Import & Assign</h4>
+                <p>Pick up files from assignment folders → Import leads via API into matching Instantly campaign → Enforce daily targets (5,080/campaign) → De-dup within campaign → Rename with <code>ASSIGNED.</code> prefix</p>
+                <div class="step-tags">
+                  <span class="step-tag trigger">Dependency-triggered</span>
+                  <span class="step-tag">Instantly API</span>
+                  <span class="step-tag">Daily Targets</span>
+                </div>
+              </div>
+            </div>
+            <div class="pipeline-arrow">↓</div>
+            <div class="pipeline-step orchestrator-step">
+              <div class="step-number orch">O</div>
+              <div class="step-content">
+                <h4>Orchestrator</h4>
+                <p>Coordinates everything: job scheduling, dependency management, multi-day tracking, session resume, error escalation, daily/weekly summaries</p>
+                <div class="step-tags">
+                  <span class="step-tag orch-tag">Always Running</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google Drive Architecture -->
+        <div class="card">
+          <h3>Google Drive Architecture</h3>
+          <p class="card-desc">All lead data flows through a structured Drive hierarchy managed by a service account.</p>
+          <div class="drive-tree">
+            <div class="tree-node root">
+              <span class="node-icon">📁</span>
+              <span class="node-name">wishpond</span>
+              <span class="node-desc">Root data hub</span>
+            </div>
+            <div class="tree-children">
+              <div class="tree-node">
+                <span class="node-icon">📁</span>
+                <span class="node-name">raw_files/</span>
+                <span class="node-desc">Incoming lead files</span>
+              </div>
+              <div class="tree-grandchildren">
+                <div class="tree-node">
+                  <span class="node-icon">📁</span>
+                  <span class="node-name">{year}/{month}/{day}/</span>
+                </div>
+                <div class="tree-grandchildren">
+                  <div class="tree-node leaf">
+                    <span class="node-icon">📄</span>
+                    <span class="node-name">cleaned_data_*.csv</span>
+                    <span class="node-desc">Master cleaned file</span>
+                  </div>
+                  <div class="tree-node leaf">
+                    <span class="node-icon">📄</span>
+                    <span class="node-name">removed_data_*.csv</span>
+                    <span class="node-desc">Rows removed by cleaner</span>
+                  </div>
+                  <div class="tree-node">
+                    <span class="node-icon">📁</span>
+                    <span class="node-name">output_chunks_.../</span>
+                    <span class="node-desc">Batch files for pipeline</span>
+                  </div>
+                </div>
+              </div>
+              <div class="tree-node">
+                <span class="node-icon">📁</span>
+                <span class="node-name">processed_files/</span>
+                <span class="node-desc">Pipeline output</span>
+              </div>
+              <div class="tree-grandchildren">
+                <div class="tree-node">
+                  <span class="node-icon">📁</span>
+                  <span class="node-name">{year}/{month}/{day}/</span>
+                  <span class="node-desc">Personalized outputs</span>
+                </div>
+                <div class="tree-node highlight">
+                  <span class="node-icon">📁</span>
+                  <span class="node-name">{year}/ready_for_assignment/</span>
+                  <span class="node-desc">QA-approved → Instantly</span>
+                </div>
+                <div class="tree-grandchildren">
+                  <div class="tree-node campaign-folder">
+                    <span class="node-icon">📁</span>
+                    <span class="node-name">storeleads_ecommerce-mixed/</span>
+                  </div>
+                  <div class="tree-node campaign-folder">
+                    <span class="node-icon">📁</span>
+                    <span class="node-name">builtwith_woocommerce-shopify/</span>
+                  </div>
+                  <div class="tree-node campaign-folder">
+                    <span class="node-icon">📁</span>
+                    <span class="node-name">builtwith_wordpress/</span>
+                  </div>
+                  <div class="tree-node campaign-folder">
+                    <span class="node-icon">📁</span>
+                    <span class="node-name">recycled_recycled/</span>
+                  </div>
+                </div>
+                <div class="tree-node">
+                  <span class="node-icon">📁</span>
+                  <span class="node-name">{year}/piq_import/</span>
+                  <span class="node-desc">Copies for PIQ</span>
+                </div>
+              </div>
+              <div class="tree-node">
+                <span class="node-icon">📊</span>
+                <span class="node-name">Wishpond Leads Posted for Customization</span>
+                <span class="node-desc">Posting tracker sheet</span>
+              </div>
+            </div>
+          </div>
+          <div class="drive-info">
+            <div class="info-item">
+              <span class="info-label">Service Account</span>
+              <code>sam-lead-researcher@leadgen-490022.iam.gserviceaccount.com</code>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Access Method</span>
+              <span>Headless via Google API (no browser auth)</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Limitation</span>
+              <span>Zero storage quota — rename-in-place only, cannot create/copy files directly</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 2: Campaigns -->
+      <section id="page-campaigns" class="page">
+        <header class="page-header">
+          <h2>Campaigns</h2>
+          <p class="subtitle">Instantly campaign details and assignment mapping</p>
+        </header>
+
+        <!-- Campaign Cards -->
+        <div class="campaigns-grid">
+          <div class="campaign-card">
+            <div class="campaign-header storeleads">
+              <div class="campaign-icon">🏪</div>
+              <div>
+                <h3>Wishpond Ecomm Storeleads</h3>
+                <p class="campaign-subtitle">New leads</p>
+              </div>
+              <div class="campaign-status active">Active</div>
+            </div>
+            <div class="campaign-body">
+              <div class="campaign-details">
+                <div class="detail-row">
+                  <span class="detail-label">Campaign ID</span>
+                  <code class="detail-value">c16d4a54-743b-4c42-a8d4-164d71dbb0ca</code>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Source</span>
+                  <span class="detail-value">Storeleads</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Category</span>
+                  <span class="detail-value">ecommerce mixed</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Drive Folder</span>
+                  <code class="detail-value">storeleads_ecommerce-mixed/</code>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Daily Target</span>
+                  <span class="detail-value highlight-val">5,080 leads</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Mailboxes</span>
+                  <span class="detail-value">254</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Daily Sending Limit</span>
+                  <span class="detail-value">20 per mailbox</span>
+                </div>
+              </div>
+              <div class="campaign-note">
+                <strong>Note:</strong> Prioritize latest storeleads for this campaign.
+              </div>
+            </div>
+          </div>
+
+          <div class="campaign-card">
+            <div class="campaign-header builtwith">
+              <div class="campaign-icon">🛒</div>
+              <div>
+                <h3>Wishpond Ecomm Builtwith</h3>
+                <p class="campaign-subtitle">New leads</p>
+              </div>
+              <div class="campaign-status active">Active</div>
+            </div>
+            <div class="campaign-body">
+              <div class="campaign-details">
+                <div class="detail-row">
+                  <span class="detail-label">Campaign ID</span>
+                  <code class="detail-value">36867c03-9d3d-459b-82ac-449e58b7af0b</code>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Source</span>
+                  <span class="detail-value">BuiltWith</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Category</span>
+                  <span class="detail-value">woocommerce new sites, shopify recently added</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Drive Folder</span>
+                  <code class="detail-value">builtwith_woocommerce-shopify/</code>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Daily Target</span>
+                  <span class="detail-value highlight-val">5,080 leads</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Mailboxes</span>
+                  <span class="detail-value">254</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Daily Sending Limit</span>
+                  <span class="detail-value">20 per mailbox</span>
+                </div>
+              </div>
+              <div class="campaign-note">
+                <strong>Note:</strong> Check weekly for top performers in this campaign.
+              </div>
+            </div>
+          </div>
+
+          <div class="campaign-card">
+            <div class="campaign-header wordpress">
+              <div class="campaign-icon">🌐</div>
+              <div>
+                <h3>Wishpond Wordpress New Sites</h3>
+                <p class="campaign-subtitle">Builtwith</p>
+              </div>
+              <div class="campaign-status active">Active</div>
+            </div>
+            <div class="campaign-body">
+              <div class="campaign-details">
+                <div class="detail-row">
+                  <span class="detail-label">Campaign ID</span>
+                  <code class="detail-value">fb6944b5-f537-4163-8acb-0cda778dee65</code>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Source</span>
+                  <span class="detail-value">BuiltWith</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Category</span>
+                  <span class="detail-value">wordpress new sites</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Drive Folder</span>
+                  <code class="detail-value">builtwith_wordpress/</code>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Daily Target</span>
+                  <span class="detail-value highlight-val">5,080 leads</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Mailboxes</span>
+                  <span class="detail-value">254</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Daily Sending Limit</span>
+                  <span class="detail-value">20 per mailbox</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="campaign-card">
+            <div class="campaign-header recycled">
+              <div class="campaign-icon">♻️</div>
+              <div>
+                <h3>Wishpond Recycled Leads</h3>
+                <p class="campaign-subtitle">Recycled</p>
+              </div>
+              <div class="campaign-status active">Active</div>
+            </div>
+            <div class="campaign-body">
+              <div class="campaign-details">
+                <div class="detail-row">
+                  <span class="detail-label">Campaign ID</span>
+                  <code class="detail-value">c57caa35-738b-469e-8710-e2065a0d3664</code>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Source</span>
+                  <span class="detail-value">Recycled</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Category</span>
+                  <span class="detail-value">recycled - active, recycled - replied</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Drive Folder</span>
+                  <code class="detail-value">recycled_recycled/</code>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Daily Target</span>
+                  <span class="detail-value highlight-val">5,080 leads</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Mailboxes</span>
+                  <span class="detail-value">254</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Daily Sending Limit</span>
+                  <span class="detail-value">20 per mailbox</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Test Campaign -->
+        <div class="card test-campaign">
+          <h3>🧪 Test Campaign</h3>
+          <div class="campaign-details">
+            <div class="detail-row">
+              <span class="detail-label">Name</span>
+              <span class="detail-value">Wishpond - eComm (for training only)</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Campaign ID</span>
+              <code class="detail-value">40360683-0bf2-42e8-9e91-bc7b04aedc26</code>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Status</span>
+              <span class="detail-value"><span class="campaign-status draft">Draft</span></span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Purpose</span>
+              <span class="detail-value">Used for API testing before going live</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Global Rules -->
+        <div class="card">
+          <h3>Global Rules</h3>
+          <div class="rules-grid">
+            <div class="rule-item warning">
+              <span class="rule-icon">⚠️</span>
+              <p>Gmail addresses daily cap is <strong>2,000</strong> for ALL campaigns combined</p>
+            </div>
+            <div class="rule-item info">
+              <span class="rule-icon">📋</span>
+              <p>Leads must be assigned <strong>1 business day before</strong> the scheduled date</p>
+            </div>
+            <div class="rule-item info">
+              <span class="rule-icon">🔄</span>
+              <p>De-dup: skip only if already in <strong>same campaign</strong> (not across workspace)</p>
+            </div>
+            <div class="rule-item info">
+              <span class="rule-icon">📊</span>
+              <p>Weekly target across all campaigns: <strong>101,600 leads</strong></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 3: Dashboard -->
+      <section id="page-dashboard" class="page">
+        <header class="page-header">
+          <h2>Dashboard</h2>
+          <p class="subtitle">Pipeline metrics and performance insights</p>
+        </header>
+
+        <!-- KPI Summary Row -->
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-icon posted">📤</div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpi-posted">—</span>
+              <span class="kpi-label">Posted for Customization</span>
+              <span class="kpi-period">Today</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon customized">✨</div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpi-customized">—</span>
+              <span class="kpi-label">Leads Customized</span>
+              <span class="kpi-period">Today</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon imported">🚀</div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpi-imported">—</span>
+              <span class="kpi-label">Imported to Instantly</span>
+              <span class="kpi-period">Today</span>
+            </div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-icon rate">📈</div>
+            <div class="kpi-data">
+              <span class="kpi-value" id="kpi-rate">—</span>
+              <span class="kpi-label">Customization Rate</span>
+              <span class="kpi-period">Average</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Target Progress -->
+        <div class="card">
+          <div class="card-header-row">
+            <h3>Daily Target Progress</h3>
+            <span class="card-date" id="target-date">—</span>
+          </div>
+          <div class="targets-grid">
+            <div class="target-item">
+              <div class="target-header">
+                <span class="target-name">Storeleads Ecomm</span>
+                <span class="target-count"><span id="target-storeleads">0</span> / 5,080</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill storeleads" id="progress-storeleads" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="target-item">
+              <div class="target-header">
+                <span class="target-name">Builtwith Ecomm</span>
+                <span class="target-count"><span id="target-builtwith-ecomm">0</span> / 5,080</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill builtwith" id="progress-builtwith-ecomm" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="target-item">
+              <div class="target-header">
+                <span class="target-name">Builtwith Wordpress</span>
+                <span class="target-count"><span id="target-builtwith-wp">0</span> / 5,080</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill wordpress" id="progress-builtwith-wp" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="target-item">
+              <div class="target-header">
+                <span class="target-name">Recycled</span>
+                <span class="target-count"><span id="target-recycled">0</span> / 5,080</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill recycled" id="progress-recycled" style="width: 0%"></div>
+              </div>
+            </div>
+            <div class="target-item total">
+              <div class="target-header">
+                <span class="target-name">TOTAL</span>
+                <span class="target-count"><span id="target-total">0</span> / 20,320</span>
+              </div>
+              <div class="progress-bar total-bar">
+                <div class="progress-fill total" id="progress-total" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline Funnel -->
+        <div class="card">
+          <h3>Pipeline Funnel</h3>
+          <p class="card-desc">Lead volume at each stage of the pipeline</p>
+          <div class="funnel">
+            <div class="funnel-stage">
+              <div class="funnel-bar" style="width: 100%">
+                <span class="funnel-label">Raw Leads Received</span>
+                <span class="funnel-value" id="funnel-raw">—</span>
+              </div>
+            </div>
+            <div class="funnel-stage">
+              <div class="funnel-bar" style="width: 85%">
+                <span class="funnel-label">Validated & Posted</span>
+                <span class="funnel-value" id="funnel-posted">—</span>
+              </div>
+            </div>
+            <div class="funnel-stage">
+              <div class="funnel-bar" style="width: 25%">
+                <span class="funnel-label">Customized (personalized)</span>
+                <span class="funnel-value" id="funnel-customized">—</span>
+              </div>
+            </div>
+            <div class="funnel-stage">
+              <div class="funnel-bar" style="width: 22%">
+                <span class="funnel-label">Imported to Instantly</span>
+                <span class="funnel-value" id="funnel-imported">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly Breakdown -->
+        <div class="card">
+          <div class="card-header-row">
+            <h3>Weekly Assignment Breakdown</h3>
+            <div class="period-selector">
+              <button class="period-btn active" data-period="week">This Week</button>
+              <button class="period-btn" data-period="month">This Month</button>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Storeleads Ecomm</th>
+                  <th>Builtwith Ecomm</th>
+                  <th>Builtwith WP</th>
+                  <th>Recycled</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="weekly-table-body">
+                <!-- Populated by JS -->
+              </tbody>
+              <tfoot>
+                <tr class="total-row">
+                  <td><strong>Total</strong></td>
+                  <td id="weekly-total-storeleads">—</td>
+                  <td id="weekly-total-builtwith">—</td>
+                  <td id="weekly-total-wp">—</td>
+                  <td id="weekly-total-recycled">—</td>
+                  <td id="weekly-total-all">—</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+        <!-- Charts Row -->
+        <div class="charts-row">
+          <div class="card chart-card">
+            <h3>Daily Leads Imported</h3>
+            <div class="chart-container">
+              <canvas id="chart-daily"></canvas>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <h3>Campaign Distribution</h3>
+            <div class="chart-container">
+              <canvas id="chart-distribution"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pipeline Health -->
+        <div class="card">
+          <h3>Pipeline Health</h3>
+          <div class="health-grid">
+            <div class="health-item">
+              <div class="health-indicator green"></div>
+              <div class="health-info">
+                <span class="health-label">Drive Access</span>
+                <span class="health-status">Connected</span>
+              </div>
+            </div>
+            <div class="health-item">
+              <div class="health-indicator green"></div>
+              <div class="health-info">
+                <span class="health-label">Instantly API</span>
+                <span class="health-status">Connected</span>
+              </div>
+            </div>
+            <div class="health-item">
+              <div class="health-indicator green"></div>
+              <div class="health-info">
+                <span class="health-label">Google Sheets</span>
+                <span class="health-status">Connected</span>
+              </div>
+            </div>
+            <div class="health-item">
+              <div class="health-indicator" id="health-queue"></div>
+              <div class="health-info">
+                <span class="health-label">Import Queue</span>
+                <span class="health-status" id="health-queue-text">—</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data notice -->
+        <div class="data-notice">
+          <p>📡 Dashboard data is populated from Sam's state files. When connected to a live backend, all metrics update in real-time.</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
