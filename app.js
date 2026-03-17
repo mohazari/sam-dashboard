@@ -65,6 +65,9 @@ function populateDashboard() {
   document.getElementById('kpi-posted').textContent = formatNumber(sumColumn('storeleads') + sumColumn('builtwith_ecomm') + sumColumn('builtwith_wp') + sumColumn('recycled'));
   document.getElementById('kpi-customized').textContent = formatNumber(monthly.customized);
   document.getElementById('kpi-imported').textContent = formatNumber(monthly.imported);
+  const dailyTarget = 20320;
+  const importedPct = ((monthly.imported / dailyTarget) * 100).toFixed(0);
+  document.getElementById('kpi-imported-pct').textContent = importedPct + '%';
   document.getElementById('kpi-rate').textContent = monthly.customizationRate + '%';
 
   // Date

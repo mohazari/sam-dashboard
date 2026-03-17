@@ -764,6 +764,13 @@ body {
   margin-top: 2px;
 }
 
+.kpi-sub {
+  font-size: 11px;
+  color: var(--green);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
 /* Progress Bars */
 .targets-grid {
   display: flex;
