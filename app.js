@@ -93,8 +93,8 @@ function populateDashboard() {
   document.getElementById('funnel-customized').textContent = formatNumber(funnel.customized);
   document.getElementById('funnel-imported').textContent = formatNumber(funnel.imported);
 
-  // Weekly table
-  populateWeeklyTable();
+  // Pipeline breakdown table
+  populateBreakdownTable();
 
   // Health
   document.getElementById('health-queue').className = 'health-indicator green';
@@ -124,39 +124,101 @@ function formatNumber(n) {
   return n.toLocaleString();
 }
 
-// --- Weekly Table ---
-function populateWeeklyTable() {
-  const tbody = document.getElementById('weekly-table-body');
+// --- Pipeline Breakdown Table ---
+
+// Extended sample data with posted/received/assigned per source per day
+var breakdownData = [
+  { date: '2026-03-10', source: 'storeleads_ecommerce-mixed',   posted: 14800, received: 3451, assigned: 3900,  target: 5080 },
+  { date: '2026-03-11', source: 'storeleads_ecommerce-mixed',   posted: 14800, received: 3451, assigned: 0,     target: 5080 },
+  { date: '2026-03-11', source: 'builtwith_woocommerce-shopify', posted: 25000, received: 4200, assigned: 26300, target: 5080 },
+  { date: '2026-03-11', source: 'builtwith_wordpress',          posted: 25000, received: 3900, assigned: 26500, target: 5080 },
+  { date: '2026-03-11', source: 'recycled_recycled',            posted: 0,     received: 0,    assigned: 28100, target: 5080 },
+  { date: '2026-03-12', source: 'storeleads_ecommerce-mixed',   posted: 14800, received: 3456, assigned: 21900, target: 5080 },
+  { date: '2026-03-13', source: 'storeleads_ecommerce-mixed',   posted: 0,     received: 0,    assigned: 4300,  target: 5080 },
+  { date: '2026-03-13', source: 'builtwith_woocommerce-shopify', posted: 11400, received: 1950, assigned: 10600, target: 5080 },
+  { date: '2026-03-13', source: 'builtwith_wordpress',          posted: 11400, received: 1950, assigned: 26400, target: 5080 },
+  { date: '2026-03-13', source: 'recycled_recycled',            posted: 0,     received: 0,    assigned: 10500, target: 5080 },
+  { date: '2026-03-14', source: 'builtwith_woocommerce-shopify', posted: 0,     received: 0,    assigned: 12800, target: 5080 },
+  { date: '2026-03-14', source: 'recycled_recycled',            posted: 0,     received: 0,    assigned: 9700,  target: 5080 },
+  { date: '2026-03-15', source: 'storeleads_ecommerce-mixed',   posted: 0,     received: 0,    assigned: 8100,  target: 5080 },
+  { date: '2026-03-16', source: 'storeleads_ecommerce-mixed',   posted: 0,     received: 0,    assigned: 14100, target: 5080 },
+  { date: '2026-03-16', source: 'builtwith_woocommerce-shopify', posted: 0,     received: 0,    assigned: 3500,  target: 5080 },
+  { date: '2026-03-16', source: 'builtwith_wordpress',          posted: 0,     received: 0,    assigned: 5900,  target: 5080 },
+  { date: '2026-03-16', source: 'recycled_recycled',            posted: 0,     received: 0,    assigned: 11300, target: 5080 },
+];
+
+var sourceTargets = {
+  'storeleads_ecommerce-mixed':   5080,
+  'builtwith_woocommerce-shopify': 5080,
+  'builtwith_wordpress':           5080,
+  'recycled_recycled':             5080,
+  'all':                           20320,
+};
+
+function populateBreakdownTable() {
+  var sourceFilter = document.getElementById('breakdown-source').value;
+  var fromDate = document.getElementById('breakdown-from').value;
+  var toDate = document.getElementById('breakdown-to').value;
+
+  // Aggregate by date
+  var byDate = {};
+  breakdownData.forEach(function(row) {
+    if (row.date < fromDate || row.date > toDate) return;
+    if (sourceFilter !== 'all' && row.source !== sourceFilter) return;
+
+    if (!byDate[row.date]) {
+      byDate[row.date] = { posted: 0, received: 0, assigned: 0 };
+    }
+    byDate[row.date].posted   += row.posted;
+    byDate[row.date].received += row.received;
+    byDate[row.date].assigned += row.assigned;
+  });
+
+  var dailyTarget = sourceFilter === 'all' ? sourceTargets['all'] : sourceTargets[sourceFilter] || 5080;
+
+  var tbody = document.getElementById('breakdown-table-body');
   tbody.innerHTML = '';
 
-  let totals = { storeleads: 0, builtwith_ecomm: 0, builtwith_wp: 0, recycled: 0, all: 0 };
+  var totals = { posted: 0, received: 0, assigned: 0 };
 
-  sampleData.assignments.forEach(row => {
-    const total = row.storeleads + row.builtwith_ecomm + row.builtwith_wp + row.recycled;
-    totals.storeleads += row.storeleads;
-    totals.builtwith_ecomm += row.builtwith_ecomm;
-    totals.builtwith_wp += row.builtwith_wp;
-    totals.recycled += row.recycled;
-    totals.all += total;
+  Object.keys(byDate).sort().forEach(function(date) {
+    var row = byDate[date];
+    var pct = row.assigned > 0 ? Math.round((row.assigned / dailyTarget) * 100) : 0;
+    var pctClass = pct >= 100 ? 'pct-green' : pct >= 60 ? 'pct-yellow' : 'pct-red';
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${row.date}</td>
-      <td>${formatNumber(row.storeleads)}</td>
-      <td>${formatNumber(row.builtwith_ecomm)}</td>
-      <td>${formatNumber(row.builtwith_wp)}</td>
-      <td>${formatNumber(row.recycled)}</td>
-      <td><strong>${formatNumber(total)}</strong></td>
-    `;
+    totals.posted   += row.posted;
+    totals.received += row.received;
+    totals.assigned += row.assigned;
+
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + date + '</td>' +
+      '<td>' + formatNumber(row.posted) + '</td>' +
+      '<td>' + formatNumber(row.received) + '</td>' +
+      '<td>' + formatNumber(row.assigned) + '</td>' +
+      '<td><span class="pct-badge ' + pctClass + '">' + pct + '%</span></td>';
     tbody.appendChild(tr);
   });
 
-  document.getElementById('weekly-total-storeleads').textContent = formatNumber(totals.storeleads);
-  document.getElementById('weekly-total-builtwith').textContent = formatNumber(totals.builtwith_ecomm);
-  document.getElementById('weekly-total-wp').textContent = formatNumber(totals.builtwith_wp);
-  document.getElementById('weekly-total-recycled').textContent = formatNumber(totals.recycled);
-  document.getElementById('weekly-total-all').textContent = formatNumber(totals.all);
+  // Totals row
+  var totalPct = totals.assigned > 0 ? Math.round((totals.assigned / (dailyTarget * Object.keys(byDate).length)) * 100) : 0;
+  var totalPctClass = totalPct >= 100 ? 'pct-green' : totalPct >= 60 ? 'pct-yellow' : 'pct-red';
+
+  document.getElementById('breakdown-total-posted').textContent   = formatNumber(totals.posted);
+  document.getElementById('breakdown-total-received').textContent = formatNumber(totals.received);
+  document.getElementById('breakdown-total-assigned').textContent = formatNumber(totals.assigned);
+  document.getElementById('breakdown-total-pct').innerHTML = '<span class="pct-badge ' + totalPctClass + '">' + totalPct + '% avg</span>';
 }
+
+// Wire up filters
+document.addEventListener('DOMContentLoaded', function() {
+  var sourceEl = document.getElementById('breakdown-source');
+  var fromEl   = document.getElementById('breakdown-from');
+  var toEl     = document.getElementById('breakdown-to');
+  if (sourceEl) sourceEl.addEventListener('change', populateBreakdownTable);
+  if (fromEl)   fromEl.addEventListener('change', populateBreakdownTable);
+  if (toEl)     toEl.addEventListener('change', populateBreakdownTable);
+});
 
 // --- Charts ---
 function renderDailyChart() {
@@ -280,14 +342,7 @@ function renderDistributionChart() {
   });
 }
 
-// --- Period Selector ---
-document.querySelectorAll('.period-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    // In production, this would reload the table with different date ranges
-  });
-});
+// (period selector replaced by date range picker)
 
 // --- Init ---
 document.addEventListener('DOMContentLoaded', populateDashboard);

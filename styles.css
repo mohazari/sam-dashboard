@@ -219,8 +219,10 @@ body {
 .card-header-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   margin-bottom: 16px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .card-header-row h3 {
@@ -906,34 +908,112 @@ body {
   font-weight: 600;
 }
 
-.period-selector {
+.pct-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: var(--mono);
+}
+
+.pct-green {
+  background: var(--green-dim);
+  color: var(--green);
+}
+
+.pct-yellow {
+  background: var(--yellow-dim);
+  color: var(--yellow);
+}
+
+.pct-red {
+  background: var(--red-dim);
+  color: var(--red);
+}
+
+.filter-controls {
   display: flex;
+  gap: 16px;
+  align-items: flex-end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
   gap: 4px;
-  background: rgba(255, 255, 255, 0.03);
+}
+
+.filter-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.filter-select {
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 3px;
-}
-
-.period-btn {
-  padding: 6px 14px;
-  border: none;
-  background: none;
-  color: var(--text-dim);
-  font-size: 12px;
-  font-weight: 500;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: var(--font);
-}
-
-.period-btn.active {
-  background: var(--accent-dim);
-  color: var(--accent-light);
-}
-
-.period-btn:hover:not(.active) {
   color: var(--text);
+  font-size: 12px;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238888a0'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+  min-width: 200px;
+}
+
+.filter-select:hover,
+.filter-select:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.filter-select option {
+  background: var(--bg-card);
+  color: var(--text);
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-date {
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 12px;
+  font-family: var(--font);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.filter-date:hover,
+.filter-date:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.filter-date::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+  cursor: pointer;
+}
+
+.date-sep {
+  color: var(--text-muted);
+  font-size: 14px;
 }
 
 /* Charts */

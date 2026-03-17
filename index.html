@@ -617,13 +617,29 @@
           </div>
         </div>
 
-        <!-- Weekly Breakdown -->
+        <!-- Pipeline Breakdown -->
         <div class="card">
           <div class="card-header-row">
-            <h3>Weekly Assignment Breakdown</h3>
-            <div class="period-selector">
-              <button class="period-btn active" data-period="week">This Week</button>
-              <button class="period-btn" data-period="month">This Month</button>
+            <h3>Pipeline Breakdown</h3>
+            <div class="filter-controls">
+              <div class="filter-group">
+                <label class="filter-label">Source / Category</label>
+                <select id="breakdown-source" class="filter-select">
+                  <option value="all">All Campaigns</option>
+                  <option value="storeleads_ecommerce-mixed">Storeleads — Ecommerce Mixed</option>
+                  <option value="builtwith_woocommerce-shopify">Builtwith — Woocommerce / Shopify</option>
+                  <option value="builtwith_wordpress">Builtwith — Wordpress</option>
+                  <option value="recycled_recycled">Recycled</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label class="filter-label">Date Range</label>
+                <div class="date-range">
+                  <input type="date" id="breakdown-from" class="filter-date" value="2026-03-10">
+                  <span class="date-sep">→</span>
+                  <input type="date" id="breakdown-to" class="filter-date" value="2026-03-16">
+                </div>
+              </div>
             </div>
           </div>
           <div class="table-container">
@@ -631,24 +647,22 @@
               <thead>
                 <tr>
                   <th>Date</th>
-                  <th>Storeleads Ecomm</th>
-                  <th>Builtwith Ecomm</th>
-                  <th>Builtwith WP</th>
-                  <th>Recycled</th>
-                  <th>Total</th>
+                  <th>Posted for Customization</th>
+                  <th>Received from Customization</th>
+                  <th>Assigned to Campaign</th>
+                  <th>% of Target</th>
                 </tr>
               </thead>
-              <tbody id="weekly-table-body">
+              <tbody id="breakdown-table-body">
                 <!-- Populated by JS -->
               </tbody>
               <tfoot>
                 <tr class="total-row">
                   <td><strong>Total</strong></td>
-                  <td id="weekly-total-storeleads">—</td>
-                  <td id="weekly-total-builtwith">—</td>
-                  <td id="weekly-total-wp">—</td>
-                  <td id="weekly-total-recycled">—</td>
-                  <td id="weekly-total-all">—</td>
+                  <td id="breakdown-total-posted">—</td>
+                  <td id="breakdown-total-received">—</td>
+                  <td id="breakdown-total-assigned">—</td>
+                  <td id="breakdown-total-pct">—</td>
                 </tr>
               </tfoot>
             </table>
